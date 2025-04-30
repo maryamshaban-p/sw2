@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - Book Haven</title>
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Your Cart</h2>
+        <!-- Cart Items Section -->
+        <div id="cart-items"></div>
+
+        <!-- Cart Total Section -->
+        <div class="cart-summary">
+            <div class="total">
+                Total: $<span id="total-price">0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to update the cart view with current cart items
+        function updateCartUI(cart) {
+            const cartItemsContainer = document.getElementById('cart-items');
+            let html = '';
+            let totalPrice = 0;
+
+            cart.items.forEach(item => {
+                html += `
+                    <div class="cart-item">
+                        <img src="${item.productImage}" alt="${item.productName}">
+                        <div class="cart-item-info">
+                            <h3>${item.productName}</h3>
+                            <span>Price: $${item.productPrice}</span>
+                            <div class="item-price">
+                                Total: $${item.productPrice * item.quantity}
+                            </div>
+                        </div>
+                        <div class="cart-item-actions">
+                            <button class="remove-btn" onclick="removeItem('${item._id}')">Remove</button>
+                        </div>
+                    </div>
+                `;
+                totalPrice += item.productPrice * item.quantity;  // Calculate total price
+            });
+
+            // Update the cart view
+            cartItemsContainer.innerHTML = html;
+            document.getElementById('total-price').innerText = totalPrice.toFixed(2);  // Update total price
+        }
+
+        // Fetch the cart data from the server
+        function fetchCart() {
+            const userId = localStorage.getItem("userId");  // Get the userId from localStorage
+
+            if (!userId) {
+                alert("You need to be logged in to view your cart.");
+                return;
+            }
+
+            fetch(`/api/cart/${userId}`)  // Use the userId to fetch the cart
+                .then(response => response.json())
+                .then(data => {
+                    if (data.cart) {
+                        updateCartUI(data.cart);  // Update cart UI with fetched data
+                    } else {
+                        alert("Your cart is empty.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching cart:', error);
+                });
+        }
+
+        // Load the cart on page load
+        window.onload = function () {
+            fetchCart();
+        };
+
+        // Remove item from the cart
+        function removeItem(itemId) {
+            fetch(`/api/cart/remove/${itemId}`, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Item removed from cart!');
+                        fetchCart();  // Refresh the cart after item removal
+                    }
+                })
+                .catch(error => console.error('Error removing item:', error));
+        }
+    </script>
+</body>
+</html>

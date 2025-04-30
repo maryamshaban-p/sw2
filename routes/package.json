@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "hbs": "^4.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.14.2",
+    "mongoose": "^8.13.2",
+    "nodemon": "^3.1.9"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "nodemon app.js"
+  },
+  "name": "routes",
+  "version": "1.0.0",
+  "main": "app.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
