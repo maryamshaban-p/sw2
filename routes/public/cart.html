@@ -26,11 +26,13 @@
         html += `
           <div class="cart-item">
             <img src="${item.productImage}" alt="${item.productName}" />
-            <div class="cart-item-info">
-              <h3>${item.productName}</h3>
-              <span>Price: $${item.productPrice}</span>
-              <div class="item-price">Total: $${(item.productPrice * item.quantity).toFixed(2)}</div>
-            </div>
+           <div class="cart-item-info">
+  <h3>${item.productName}</h3>
+  <span>Price: $${item.productPrice}</span><br>
+  <span>Quantity: ${item.quantity}</span>
+  <div class="item-price">Total: $${(item.productPrice * item.quantity).toFixed(2)}</div>
+</div>
+
             <div class="cart-item-actions">
               <button class="remove-btn" onclick="removeItem('${item.productId}')">Remove</button>
             </div>
