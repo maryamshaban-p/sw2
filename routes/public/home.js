@@ -3,7 +3,7 @@ async function loadFeaturedProducts() {
     try {
         const response = await fetch('/api/products/all');
         const products = await response.json();
-        
+
         const featuredContainer = document.querySelector('#featured-books .product-list .row');
         featuredContainer.innerHTML = products.map(product => `
             <div class="col-md-3">
@@ -32,11 +32,11 @@ async function loadFeaturedProducts() {
 }
 
 // Function to fetch and display popular products
-async function loadPopularProducts() {
+/* async function loadPopularProducts() {
     try {
         const response = await fetch('/api/products/popular');
         const products = await response.json();
-        
+
         const popularContainer = document.querySelector('#popular-books .tab-content #all-genre .row');
         popularContainer.innerHTML = products.map(product => `
             <div class="col-md-3">
@@ -62,14 +62,14 @@ async function loadPopularProducts() {
     } catch (error) {
         console.error('Error loading popular products:', error);
     }
-}
+} */
 
 // Function to fetch and display special offers
-async function loadSpecialOffers() {
+/* async function loadSpecialOffers() {
     try {
         const response = await fetch('/api/products/special-offers');
         const products = await response.json();
-        
+
         const specialOffersContainer = document.querySelector('#special-offer .product-grid');
         specialOffersContainer.innerHTML = products.map(product => `
             <div class="product-item">
@@ -96,12 +96,13 @@ async function loadSpecialOffers() {
     } catch (error) {
         console.error('Error loading special offer products:', error);
     }
-}
+} */
 
-// Add to cart functionality
-document.addEventListener("DOMContentLoaded", () => {
+// Event delegation for dynamically created Add to Cart buttons
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadFeaturedProducts();
+
     const addToCartBtns = document.querySelectorAll(".add-to-cart");
-
     addToCartBtns.forEach(btn => {
         btn.addEventListener("click", (e) => {
             const userId = localStorage.getItem('userId');
@@ -118,39 +119,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fetch('/api/cart/add', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    userId: userId,
-                    productId: productId,
-                    productName: productName,
-                    productPrice: productPrice,
-                    productImage: productImage
+                    userId, productId, productName, productPrice, productImage
                 })
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Product added to cart', data);
                 alert('Product added to cart');
-                updateCartBadge(data.cart);  // Optionally update the cart badge
+                updateCartBadge(data.cart);
             })
             .catch(error => {
-                console.error('Error adding product to cart:', error);
+                console.error('Error:', error);
                 alert('Error adding product to cart');
             });
         });
     });
-
-    // Load all data when the page loads
-    loadFeaturedProducts();
-   
 });
+
 
 // Function to update cart badge
 function updateCartBadge(cart) {
-    const cartBadge = document.querySelector("#cart-badge"); // Assuming you have a badge showing cart items
+    const cartBadge = document.querySelector("#cart-badge");
     if (cartBadge) {
-        cartBadge.textContent = cart.items.length; // Display the number of items in the cart
+        cartBadge.textContent = cart.items.length;
     }
 }

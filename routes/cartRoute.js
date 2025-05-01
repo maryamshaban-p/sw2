@@ -1,26 +1,24 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
-const Cart = require('./models/cart'); // Make sure the path to the Cart model is correct
+const Cart = require('./models/cart');
 
-// إضافة كتاب للكارت
+// Add to cart
 router.post('/add', async (req, res) => {
   const { userId, productId, productName, productPrice, productImage } = req.body;
 
-  // Basic validation
   if (!userId || !productId || !productName || !productPrice || !productImage) {
     return res.status(400).json({ message: 'All fields are required.' });
   }
 
   try {
-    // Check if cart already exists for the user
-    let cart = await Cart.findOne({ userId });
+    let cart = await Cart.findOne({ userId: new mongoose.Types.ObjectId(userId) });
 
     if (!cart) {
-      // If no cart exists, create a new one
       cart = new Cart({
-        userId,
+        userId: new mongoose.Types.ObjectId(userId),
         items: [{
-          productId,
+          productId: new mongoose.Types.ObjectId(productId),
           productName,
           productPrice,
           productImage,
@@ -28,16 +26,13 @@ router.post('/add', async (req, res) => {
         }]
       });
     } else {
-      // If a cart exists, check if the product is already in the cart
       const existingItem = cart.items.find(item => item.productId.toString() === productId);
 
       if (existingItem) {
-        // If the product is already in the cart, increase the quantity
         existingItem.quantity += 1;
       } else {
-        // If the product is not in the cart, add it
         cart.items.push({
-          productId,
+          productId: new mongoose.Types.ObjectId(productId),
           productName,
           productPrice,
           productImage,
@@ -46,7 +41,6 @@ router.post('/add', async (req, res) => {
       }
     }
 
-    // Save the cart and respond with the updated cart
     await cart.save();
     res.status(200).json({ message: 'Product added to cart successfully', cart });
   } catch (error) {
@@ -55,36 +49,29 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// Get all items in the user's cart
-router.get('/user/:userId', async (req, res) => {
+// Get cart by user ID
+router.get('/:userId', async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const cart = await Cart.findOne({ userId });
-    
-    if (!cart) {
-      return res.status(404).json({ message: 'No cart found for this user' });
-    }
-    
-    res.status(200).json(cart);
+    const cart = await Cart.findOne({ userId: new mongoose.Types.ObjectId(userId) });
+    if (!cart) return res.status(200).json({ cart: { items: [] } });
+
+    res.status(200).json({ cart }); // FIX: Wrap in { cart }
   } catch (error) {
     console.error('Error fetching cart:', error);
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 });
 
-// Remove a product from the cart
+// Remove item from cart
 router.delete('/remove', async (req, res) => {
   const { userId, productId } = req.body;
 
   try {
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId: new mongoose.Types.ObjectId(userId) });
+    if (!cart) return res.status(404).json({ message: 'No cart found for this user' });
 
-    if (!cart) {
-      return res.status(404).json({ message: 'No cart found for this user' });
-    }
-
-    // Remove product from the cart
     cart.items = cart.items.filter(item => item.productId.toString() !== productId);
 
     await cart.save();
