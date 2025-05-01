@@ -68,9 +68,9 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="orders.html">
+                <a class="nav-link" href="books.html">
                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    <span>Orders</span></a>
+                    <span>Books</span></a>
             </li>
 
             <!-- Divider -->
@@ -181,9 +181,8 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Customers</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">54</div>
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Customers</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="user-count">Loading...</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -192,16 +191,15 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- income Card Example -->
+                        
+                        <!-- Income Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                income</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40K</div>
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Income</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="total-income">Loading...</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -210,18 +208,17 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Projects (Monthly) Card Example -->
+                        
+                        <!-- Projects (Books) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Projects
-                                            </div>
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Books</div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">79</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="book-count">Loading...</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -232,16 +229,15 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Orders Requests Card Example -->
+                        
+                        <!-- Orders Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Orders</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">124</div>
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Orders</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="order-count">Loading...</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -250,7 +246,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        
 
                     <!-- Content Row -->
 
@@ -318,7 +314,7 @@
             </div>
         </div>
     </div>
-
+ 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -335,7 +331,7 @@
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
-
+   
 </body>
 
 </html>
