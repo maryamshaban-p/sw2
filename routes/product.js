@@ -1,35 +1,26 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const Product = require("./models/products");
+const Product = require("./models/products");  // تأكد من المسار الصحيح للـ Model
 const router = express.Router();
 
-// Setup multer for image uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/uploads/");
-  },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname);
-    const filename = Date.now() + ext;
-    cb(null, filename);
-  }
-});
+// إعداد multer للتخزين في الذاكرة
+const storage = multer.memoryStorage();  // استخدام التخزين في الذاكرة بدلاً من القرص
 
 const upload = multer({ storage });
 
-// Route to add a new product
+// إضافة منتج جديد
 router.post("/add", upload.single("image"), async (req, res) => {
   try {
-    const { name, description, price, category } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : ""; // Ensure image is uploaded
+    const { name, description, price } = req.body;
+    const imageBuffer = req.file ? req.file.buffer : null;  // الصورة ستكون في الذاكرة
 
+    // هنا يمكن تخزين الصورة في مجلد إذا كنت تريد ذلك، أو استخدامها مباشرة
     const newProduct = new Product({
       name,
       description,
       price,
-      image,
-      category // Add category
+      image: imageBuffer ? `/uploads/${Date.now()}.jpg` : "",  // وضع مسار الصورة بعد تخزينها في مجلد
     });
 
     await newProduct.save();
@@ -40,10 +31,10 @@ router.post("/add", upload.single("image"), async (req, res) => {
   }
 });
 
-// Route to get all products (optional, you can also get them filtered by category)
+// الحصول على جميع المنتجات
 router.get("/", async (req, res) => {
   try {
-    const products = await Product.find(); // Fetch all products
+    const products = await Product.find();
     res.json(products);
   } catch (err) {
     console.error("Error fetching products:", err);
@@ -51,6 +42,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// الحصول على جميع المنتجات (إذا كان عندك مسار آخر للتأكيد)
 router.get("/all", async (req, res) => {
   try {
     const products = await Product.find();
@@ -60,7 +52,5 @@ router.get("/all", async (req, res) => {
     res.status(500).json({ msg: "Server error" });
   }
 });
-
-
 
 module.exports = router;
