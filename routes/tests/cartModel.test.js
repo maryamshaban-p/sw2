@@ -1,50 +1,62 @@
 const mongoose = require('mongoose');
-const Cart = require('../models/cart');
-const User = require('../models/users');
-const Product = require('../models/products');
+const Cart = require('../models/cart');     // adjust path
+const User = require('../models/users');     // adjust path
+const Product = require('../models/products'); // adjust path
+require('dotenv').config();
 
 describe('Cart Model', () => {
-  jest.setTimeout(15000);
-
   let userId;
   let productId;
   let product;
 
   beforeAll(async () => {
-    await mongoose.connect('mongodb://localhost:27017/test-db', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    try {
+      const uri = process.env.CONNECT_DB || 'mongodb://localhost:27017/test-db';
+      await mongoose.connect(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
 
-    const user = await User.create({
-      name: 'Test User',
-      email: 'test@example.com',
-      phone: '1234567890',
-      password: 'testPass'
-    });
-    userId = user._id;
+      const user = await User.create({
+        name: 'Test User',
+        email: 'test@example.com',
+        password: 'password123',
+        gender: 'female',           
+        phone: '1234567890'         
+      });
+      
+      userId = user._id;
 
-    product = await Product.create({
-      name: 'Test Product', // <-- مطابقة للسكيمة
-      price: 100,
-      image: 'test-image-url'
-    });
-    productId = product._id;
+      product = await Product.create({
+        name: 'Test Product',
+        price: 9.99,
+        description: 'A test product',
+        image: 'test.jpg',
+        stock: 10,
+      });
+      productId = product._id;
+
+    } catch (error) {
+      console.error('MongoDB connection failed:', error);
+    }
   });
 
   afterAll(async () => {
-    await Cart.deleteMany({});
-    await User.deleteMany({});
-    await Product.deleteMany({});
-    await mongoose.connection.close();
+    try {
+      await Cart.deleteMany({});
+      await Product.deleteMany({});
+      await User.deleteMany({});
+      await mongoose.disconnect();
+    } catch (err) {
+      console.error('Error during disconnect:', err);
+    }
   });
-
   test('should create a new cart with items', async () => {
     const cart = new Cart({
       userId,
       items: [{
         productId,
-        productName: product.name,       // <-- استخدم بيانات المنتج من الكائن نفسه
+        productName: product.name,
         productPrice: product.price,
         productImage: product.image,
         quantity: 2

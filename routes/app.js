@@ -1,17 +1,16 @@
-// app.js
-
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const path = require("path");
-
+const authRoutes = require("./auth"); // Ensure the path is correct
+const { jwtMiddleware, authorize } = require('./middlewares/authMiddleware');
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middleware
-app.use(express.json());
+app.use(express.json());  // Move this before any routes so requests are parsed properly
 app.use(express.urlencoded({ extended: false }));
 
 // Serve static files from the "public" directory
@@ -27,10 +26,9 @@ mongoose.connect(process.env.CONNECT_DB, {
 .catch(err => console.error("MongoDB Error:", err));
 
 // Routes
-app.use("/api/auth", require("./auth"));
+app.use("/api/auth", authRoutes); // Auth routes are exposed here
 app.use("/api/cart", require("./cartRoute"));
 app.use("/api/products", require("./product"));
-//app.use("/api/products", require("./products"));
 
 // Root route
 app.get("/", (req, res) => {
