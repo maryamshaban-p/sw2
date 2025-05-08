@@ -43,8 +43,22 @@
                 <i class="fas fa-lock"></i>
                 <input type="password" name="confirm_password" placeholder="Confirm Password" required>
             </div>
+<p class="password-info">Use at least 8 characters with a mix of letters and numbers</p>
+            <div class="input-group">
+               
+                <div class="gender-options">
+                    <label>
+                        <input type="radio" name="gender" value="male" required> Male
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="female" required> Female
+                    </label>
+                </div>
+            </div>
+            
+            
 
-            <p class="password-info">Use at least 8 characters with a mix of letters and numbers</p>
+            
 
             <button type="submit" class="sub">Register Now</button>
         </form>
@@ -66,6 +80,7 @@
             const phone = form.phone.value;
             const password = form.password.value;
             const confirmPassword = form.confirm_password.value;
+            const gender = form.gender.value;  // Get the selected gender
 
             if (password !== confirmPassword) {
                 alert("Passwords do not match");
@@ -78,7 +93,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name, email, phone, password })
+                    body: JSON.stringify({ name, email, phone, password, gender })  // Send gender with other data
                 });
 
                 const data = await res.json();

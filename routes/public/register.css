@@ -171,6 +171,34 @@ input:focus {
     margin-top: -15px;
     margin-bottom: 15px;
 }
+/* Styling for the gender icon */
+/* Styling for the gender icon */
+.gender-icon {
+    font-size: 20px; /* Adjust the icon size */
+    margin-right: 15px; /* Space between the icon and gender options */
+    vertical-align: middle; /* Align the icon with the radio buttons */
+}
+
+/* Container for the gender options */
+.gender-options {
+    display: flex;
+    align-items: center; /* Align the radio buttons with the labels */
+    gap: 15px; /* Adjust the spacing between Male and Female */
+}
+
+/* Style for the radio buttons */
+input[type="radio"] {
+    margin-right: 5px; /* Space between the radio button and label */
+    transform: scale(1.2); /* Slightly increase radio button size */
+}
+
+/* Optional: Styling for the labels */
+.gender-options label {
+    font-size: 16px; /* Adjust the text size of labels */
+    cursor: pointer;
+}
+
+
 
 /* ===== Animations ===== */
 @keyframes fadeIn {

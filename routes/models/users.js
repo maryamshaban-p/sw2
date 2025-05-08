@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,  // Ensuring password is required
   },
+  gender: { 
+    type: String, 
+    required: true 
+  },
 });
 
 
