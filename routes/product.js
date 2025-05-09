@@ -1,5 +1,5 @@
+// product.js
 const express = require("express");
-
 const multer = require("multer");
 const path = require("path");
 const Product = require("./models/products");
@@ -30,13 +30,13 @@ router.post("/add", upload.single("image"), async (req, res) => {
       description,
       price,
       image,
-      category // Add category
+     
     });
 
     await newProduct.save();
     res.status(201).json({ msg: "Product added successfully", product: newProduct });
   } catch (err) {
-    console.error("Error saving product:", err);
+    console.log(`Error saving product: ${err}`);
     res.status(500).json({ msg: "Server error" });
   }
 });
@@ -47,19 +47,8 @@ router.get("/", async (req, res) => {
     const products = await Product.find(); // Fetch all products
     res.json(products);
   } catch (err) {
-    console.error("Error fetching products:", err);
-    res.status(500).json({ msg: "Server error" });
-  }
-});
-
-// Route to get all products (alternative route)
-router.get("/all", async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (err) {
-    console.error("Error fetching all products:", err);
-    res.status(500).json({ msg: "Server error" });
+    console.log(`Error fetching products: ${err}`);
+    res.status(500).json({ msg: "Server error" }); 
   }
 });
 
@@ -83,12 +72,12 @@ router.put("/:id", upload.single("image"), async (req, res) => {
     );
 
     if (!updatedProduct) {
-      return res.status(404).json({ msg: "Product not found" });
+      return res.status(404).json({ msg: "Product not found" }); // السطر 79-80
     }
 
     res.json({ msg: "Product updated successfully", product: updatedProduct });
   } catch (err) {
-    console.error("Error updating product:", err);
+    console.log(`Error updating product: ${err}`);
     res.status(500).json({ msg: "Server error" });
   }
 });
@@ -98,11 +87,11 @@ router.delete("/:id", async (req, res) => {
   try {
     const result = await Product.findByIdAndDelete(req.params.id);
     if (!result) {
-      return res.status(404).json({ msg: "Product not found" });
+      return res.status(404).json({ msg: "Product not found" }); // السطر 93-94
     }
     res.json({ msg: "Product deleted successfully" });
   } catch (err) {
-    console.error("Error deleting product:", err);
+    console.log(`Error deleting product: ${err}`);
     res.status(500).json({ msg: "Server error" });
   }
 });

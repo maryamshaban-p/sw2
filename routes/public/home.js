@@ -1,7 +1,7 @@
 // Function to fetch and display featured products
 async function loadFeaturedProducts() {
     try {
-        const response = await fetch('/api/products/all');
+        const response = await fetch("http://localhost:4000/api/products");
         const products = await response.json();
 
         const featuredContainer = document.querySelector('#featured-books .product-list .row');
@@ -31,74 +31,6 @@ async function loadFeaturedProducts() {
     }
 }
 
-// Function to fetch and display popular products
-/* async function loadPopularProducts() {
-    try {
-        const response = await fetch('/api/products/popular');
-        const products = await response.json();
-
-        const popularContainer = document.querySelector('#popular-books .tab-content #all-genre .row');
-        popularContainer.innerHTML = products.map(product => `
-            <div class="col-md-3">
-                <div class="product-item">
-                    <figure class="product-style">
-                        <img src="${product.image}" alt="${product.name}" class="product-item">
-                        <button type="button" class="add-to-cart" 
-                            data-product-id="${product._id}" 
-                            data-product-name="${product.name}" 
-                            data-product-price="${product.price}" 
-                            data-product-image="${product.image}">
-                            Add to Cart
-                        </button>
-                    </figure>
-                    <figcaption>
-                        <h3>${product.name}</h3>
-                        <span>${product.description}</span>
-                        <div class="item-price">$ ${product.price.toFixed(2)}</div>
-                    </figcaption>
-                </div>
-            </div>
-        `).join('');
-    } catch (error) {
-        console.error('Error loading popular products:', error);
-    }
-} */
-
-// Function to fetch and display special offers
-/* async function loadSpecialOffers() {
-    try {
-        const response = await fetch('/api/products/special-offers');
-        const products = await response.json();
-
-        const specialOffersContainer = document.querySelector('#special-offer .product-grid');
-        specialOffersContainer.innerHTML = products.map(product => `
-            <div class="product-item">
-                <figure class="product-style">
-                    <img src="${product.image}" alt="${product.name}" class="product-item">
-                    <button type="button" class="add-to-cart" 
-                        data-product-id="${product._id}" 
-                        data-product-name="${product.name}" 
-                        data-product-price="${product.price}" 
-                        data-product-image="${product.image}">
-                        Add to Cart
-                    </button>
-                </figure>
-                <figcaption>
-                    <h3>${product.name}</h3>
-                    <span>${product.description}</span>
-                    <div class="item-price">
-                        ${product.originalPrice ? `<span class="prev-price">$ ${product.originalPrice.toFixed(2)}</span>` : ''}
-                        $ ${product.price.toFixed(2)}
-                    </div>
-                </figcaption>
-            </div>
-        `).join('');
-    } catch (error) {
-        console.error('Error loading special offer products:', error);
-    }
-} */
-
-// Event delegation for dynamically created Add to Cart buttons
 document.addEventListener("DOMContentLoaded", async () => {
     await loadFeaturedProducts();
 
